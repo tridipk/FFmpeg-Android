@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.Map;
 
 public class FFmpeg implements FFbinaryInterface {
@@ -52,16 +53,38 @@ public class FFmpeg implements FFbinaryInterface {
 
     @Override
     public FFtask execute(Map<String, String> environvenmentVars, String[] cmd, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler, float duration) {
+//        if (cmd.length != 0) {
+//            final String[] command = new String[cmd.length + 1];
+//            command[0] = FileUtils.getFFmpeg(context.provide()).getAbsolutePath();
+//            System.arraycopy(cmd, 0, command, 1, cmd.length);
+//            FFcommandExecuteAsyncTask task = new FFcommandExecuteAsyncTask(command, environvenmentVars, timeout, ffmpegExecuteResponseHandler, duration);
+//            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+//            return task;
+//        } else {
+//            throw new IllegalArgumentException("shell command cannot be empty");
+//        }
+
         if (cmd.length != 0) {
-            final String[] command = new String[cmd.length + 1];
-            command[0] = FileUtils.getFFmpeg(context.provide()).getAbsolutePath();
-            System.arraycopy(cmd, 0, command, 1, cmd.length);
+            String[] ffmpegBinary = new String[]{FileUtils.getFFmpeg(context.provide()).getAbsolutePath()};
+            String[] command = concatenate(ffmpegBinary, cmd);
             FFcommandExecuteAsyncTask task = new FFcommandExecuteAsyncTask(command, environvenmentVars, timeout, ffmpegExecuteResponseHandler, duration);
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return task;
         } else {
             throw new IllegalArgumentException("shell command cannot be empty");
         }
+    }
+
+    private static <T> T[] concatenate(T[] a, T[] b) {
+        int aLen = a.length;
+        int bLen = b.length;
+
+        @SuppressWarnings("unchecked")
+        T[] c = (T[]) Array.newInstance(a.getClass().getComponentType(), aLen + bLen);
+        System.arraycopy(a, 0, c, 0, aLen);
+        System.arraycopy(b, 0, c, aLen, bLen);
+
+        return c;
     }
 
     @Override
