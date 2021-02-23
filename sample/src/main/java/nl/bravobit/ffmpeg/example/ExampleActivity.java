@@ -50,7 +50,7 @@ public class ExampleActivity extends AppCompatActivity {
             public void onProgress(String message) {
                 Timber.d(message);
             }
-        });
+        }, 0);
 
     }
 
@@ -66,7 +66,7 @@ public class ExampleActivity extends AppCompatActivity {
             public void onProgress(String message) {
                 Timber.d(message);
             }
-        });
+        }, 0);
     }
 
     private void ffmpegTestTaskQuit() {
@@ -104,7 +104,7 @@ public class ExampleActivity extends AppCompatActivity {
             public void onFailure(String message) {
                 Timber.d(message);
             }
-        });
+        }, 30);
 
         handler.postDelayed(new Runnable() {
             @Override

@@ -22,5 +22,5 @@ public interface FFcommandExecuteResponseHandler extends ResponseHandler {
      * @param message complete output of the binary command
      */
     void onFailure(String message);
-
+    void onProgressPercent(float percent);
 }

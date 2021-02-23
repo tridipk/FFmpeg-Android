@@ -51,12 +51,12 @@ public class FFmpeg implements FFbinaryInterface {
     }
 
     @Override
-    public FFtask execute(Map<String, String> environvenmentVars, String[] cmd, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler) {
+    public FFtask execute(Map<String, String> environvenmentVars, String[] cmd, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler, float duration) {
         if (cmd.length != 0) {
             final String[] command = new String[cmd.length + 1];
             command[0] = FileUtils.getFFmpeg(context.provide()).getAbsolutePath();
             System.arraycopy(cmd, 0, command, 1, cmd.length);
-            FFcommandExecuteAsyncTask task = new FFcommandExecuteAsyncTask(command, environvenmentVars, timeout, ffmpegExecuteResponseHandler);
+            FFcommandExecuteAsyncTask task = new FFcommandExecuteAsyncTask(command, environvenmentVars, timeout, ffmpegExecuteResponseHandler, duration);
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return task;
         } else {
@@ -65,8 +65,8 @@ public class FFmpeg implements FFbinaryInterface {
     }
 
     @Override
-    public FFtask execute(String[] cmd, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler) {
-        return execute(null, cmd, ffmpegExecuteResponseHandler);
+    public FFtask execute(String[] cmd, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler, float duration) {
+        return execute(null, cmd, ffmpegExecuteResponseHandler, duration);
     }
 
     @Override

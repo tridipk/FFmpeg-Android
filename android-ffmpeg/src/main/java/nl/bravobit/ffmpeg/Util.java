@@ -102,4 +102,13 @@ class Util {
 
         return observeAction;
     }
+
+    static long getFramePositionFromCommandMessage(String message) {
+        return Long.parseLong(message.split("frame=")[1].split("fps=")[0].trim());
+    }
+
+    static float getFpsFromCommandMessage(String message) {
+        String[] stream = message.split("Stream")[1].split("fps")[0].split(",");
+        return Float.parseFloat(stream[stream.length - 1].trim());
+    }
 }

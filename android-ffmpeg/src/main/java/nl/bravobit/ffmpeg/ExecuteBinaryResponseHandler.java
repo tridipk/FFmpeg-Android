@@ -18,6 +18,11 @@ public class ExecuteBinaryResponseHandler implements FFcommandExecuteResponseHan
     }
 
     @Override
+    public void onProgressPercent(float percent) {
+
+    }
+
+    @Override
     public void onStart() {
 
     }

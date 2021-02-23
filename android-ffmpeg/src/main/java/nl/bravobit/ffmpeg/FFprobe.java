@@ -50,12 +50,12 @@ public class FFprobe implements FFbinaryInterface {
     }
 
     @Override
-    public FFtask execute(Map<String, String> environvenmentVars, String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler) {
+    public FFtask execute(Map<String, String> environvenmentVars, String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler, float duration) {
         if (cmd.length != 0) {
             final String[] command = new String[cmd.length + 1];
             command[0] = FileUtils.getFFprobe(context.provide()).getAbsolutePath();
             System.arraycopy(cmd, 0, command, 1, cmd.length);
-            FFcommandExecuteAsyncTask task = new FFcommandExecuteAsyncTask(command, environvenmentVars, timeout, ffcommandExecuteResponseHandler);
+            FFcommandExecuteAsyncTask task = new FFcommandExecuteAsyncTask(command, environvenmentVars, timeout, ffcommandExecuteResponseHandler, duration);
             task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             return task;
         } else {
@@ -64,8 +64,8 @@ public class FFprobe implements FFbinaryInterface {
     }
 
     @Override
-    public FFtask execute(String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler) {
-        return execute(null, cmd, ffcommandExecuteResponseHandler);
+    public FFtask execute(String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler, float duration) {
+        return execute(null, cmd, ffcommandExecuteResponseHandler, duration);
     }
 
     public boolean isCommandRunning(FFtask task) {

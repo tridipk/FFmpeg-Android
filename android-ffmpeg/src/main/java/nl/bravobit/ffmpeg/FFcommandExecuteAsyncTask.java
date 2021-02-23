@@ -19,14 +19,17 @@ class FFcommandExecuteAsyncTask extends AsyncTask<Void, String, CommandResult> i
     private long startTime;
     private Process process;
     private String output = "";
+    private float duration;
+    private float outputFps;
     private boolean quitPending;
 
-    FFcommandExecuteAsyncTask(String[] cmd, Map<String, String> environment, long timeout, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler) {
+    FFcommandExecuteAsyncTask(String[] cmd, Map<String, String> environment, long timeout, FFcommandExecuteResponseHandler ffmpegExecuteResponseHandler, float duration) {
         this.cmd = cmd;
         this.timeout = timeout;
         this.environment = environment;
         this.ffmpegExecuteResponseHandler = ffmpegExecuteResponseHandler;
         this.shellCommand = new ShellCommand();
+        this.duration = duration;
     }
 
     @Override
@@ -62,6 +65,16 @@ class FFcommandExecuteAsyncTask extends AsyncTask<Void, String, CommandResult> i
     protected void onProgressUpdate(String... values) {
         if (values != null && values[0] != null && ffmpegExecuteResponseHandler != null) {
             ffmpegExecuteResponseHandler.onProgress(values[0]);
+            if (values[0].contains("Stream #") && values[0].contains("Video")) {
+                outputFps = Util.getFpsFromCommandMessage(values[0]);
+            }
+//            if (values[0].contains("Duration:")) {
+//                duration = Util.getDurationFromCommandMessage(values[0]);
+//            }
+            if (values[0].contains("frame=")) {
+                float frameNumber = Util.getFramePositionFromCommandMessage(values[0]);
+                ffmpegExecuteResponseHandler.onProgressPercent((frameNumber / (outputFps * duration)) * 100);
+            }
         }
     }
 

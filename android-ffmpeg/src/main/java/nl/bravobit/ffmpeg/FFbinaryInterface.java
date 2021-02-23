@@ -12,7 +12,7 @@ interface FFbinaryInterface {
      * @param ffcommandExecuteResponseHandler {@link FFcommandExecuteResponseHandler}
      * @return the task
      */
-    FFtask execute(Map<String, String> environmentVars, String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler);
+    FFtask execute(Map<String, String> environmentVars, String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler, float duration);
 
     /**
      * Executes a command
@@ -21,7 +21,7 @@ interface FFbinaryInterface {
      * @param ffcommandExecuteResponseHandler {@link FFcommandExecuteResponseHandler}
      * @return the task
      */
-    FFtask execute(String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler);
+    FFtask execute(String[] cmd, FFcommandExecuteResponseHandler ffcommandExecuteResponseHandler, float duration);
 
     /**
      * Checks if FF binary is supported on this device
